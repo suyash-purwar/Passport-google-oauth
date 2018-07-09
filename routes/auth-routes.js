@@ -15,12 +15,11 @@ router.get('/logout', (req, res) => {
 // auth with google
 router.get('/google', passport.authenticate('google', { scope:['https://www.googleapis.com/auth/plus.login'] }));
 
+router.get("/success", (req, res) => {
+   res.render('success');
+})
+
 // callback from google consent
-router.get('/google/redirect',
-   passport.authenticate('google', {failureRedirect: '/'}),
-   (req, res) => {
-      res.render('success');
-   }
-);
+router.get('/google/redirect', passport.authenticate('google', {failureRedirect: '/', successRedirect: '/success'}));
 
 module.exports = router;
