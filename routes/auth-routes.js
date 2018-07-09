@@ -17,6 +17,7 @@ router.get('/google', passport.authenticate('google', { scope:['https://www.goog
 
 // callback from google consent
 router.get('/google/redirect',
+   passport.authenticate('google', {failureRedirect: '/'}),
    (req, res) => {
       res.render('success');
    }
