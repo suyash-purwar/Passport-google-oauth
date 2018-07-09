@@ -13,7 +13,7 @@ router.get('/logout', (req, res) => {
 })
 
 // auth with google
-router.get('/google', passport.authenticate('google', { scope:['profile'] }));
+router.get('/google', passport.authenticate('google', { scope:['https://www.googleapis.com/auth/plus.login'] }));
 
 // callback from google consent
 router.get('/google/redirect',
