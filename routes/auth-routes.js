@@ -19,7 +19,7 @@ router.get('/google', passport.authenticate('google', { scope:['https://www.goog
 router.get('/google/redirect',
    passport.authenticate('google', {failureRedirect: '/'}),
    (req, res) => {
-      res.send('yall');
+      res.render('success');
    }
 );
 
