@@ -41,7 +41,7 @@ passport.use(
                console.log(doc.data());
             });
 
-            done(null, snapshot.docs[0].id);
+            done(null, snapshot.docs[0]);
          }
       })
       .catch(error => {
