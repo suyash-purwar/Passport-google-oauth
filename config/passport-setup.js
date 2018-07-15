@@ -2,13 +2,20 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const db = require('./firebase-setup');
 const keys = require('./keys');
+let googleCredentials;
+
+
+if (!process.env.PORT) {
+   googleCredentials = keys.google.dev;
+} else {
+   googleCredentials = keys.google.prod
+}
 
 passport.serializeUser((user, done) => {
    done(null, user.id);
 });
 
 passport.deserializeUser((id, done) => {
-   console.log(id + ' 1');
    db.collection('users').doc(id)
    .get()
    .then(user => {
@@ -19,8 +26,8 @@ passport.deserializeUser((id, done) => {
 passport.use(
    new GoogleStrategy({
       // options for google strategy
-      clientID: process.env.PORT == 3000 ? keys.google.prod.clientID : keys.google.dev.clientID,
-      clientSecret: process.env.PORT == 3000 ? keys.google.prod.clientSecret : keys.google.dev.clientSecret,
+      clientID: googleCredentials.clientID,
+      clientSecret: googleCredentials.clientSecret,
       callbackURL: '/auth/google/redirect'
    },
    
