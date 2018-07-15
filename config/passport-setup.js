@@ -4,15 +4,18 @@ const db = require('./firebase-setup');
 const keys = require('./keys');
 
 passport.serializeUser((user, done) => {
+   console.log(user.id)
    done(null, user.id);
 });
 
 passport.deserializeUser((id, done) => {
+   console.log(id + ' 1');
    db.collection('users').doc(id)
    .get()
    .then(user => {
-      done(null, user);
-   });
+      console.log(user.data())
+      done(null, user.data());
+   }).catch(() => console.log("Not getting it"))
 });
 
 passport.use(
@@ -27,20 +30,15 @@ passport.use(
       db.collection('users').where('googleID', '==', profile.id).get()
       .then(snapshot => {
          if (snapshot.docs.length == 0) {
-            // create a new user in db            
+            // create a new user in db
             db.collection('users').add({
                googleID: profile.id,
                username: profile.displayName
             }).then(ref => {
-               done(null, ref.id);
+               done(null, ref);
                console.log("You signed up successfully");
             });
          } else {
-            // already have the user
-            snapshot.docs.forEach(doc => {
-               console.log(doc.data());
-            });
-
             done(null, snapshot.docs[0]);
          }
       })
