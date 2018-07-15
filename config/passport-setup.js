@@ -4,7 +4,6 @@ const db = require('./firebase-setup');
 const keys = require('./keys');
 
 passport.serializeUser((user, done) => {
-   console.log(user.id)
    done(null, user.id);
 });
 
@@ -13,7 +12,6 @@ passport.deserializeUser((id, done) => {
    db.collection('users').doc(id)
    .get()
    .then(user => {
-      console.log(user.data())
       done(null, user.data());
    }).catch(() => console.log("Not getting it"))
 });
@@ -21,8 +19,8 @@ passport.deserializeUser((id, done) => {
 passport.use(
    new GoogleStrategy({
       // options for google strategy
-      clientID: keys.google.clientID,
-      clientSecret: keys.google.clientSecret,
+      clientID: process.env.PORT == 3000 ? keys.google.prod.clientID : keys.google.dev.clientID,
+      clientSecret: process.env.PORT == 3000 ? keys.google.prod.clientSecret : keys.google.dev.clientSecret,
       callbackURL: '/auth/google/redirect'
    },
    
@@ -36,7 +34,6 @@ passport.use(
                username: profile.displayName
             }).then(ref => {
                done(null, ref);
-               console.log("You signed up successfully");
             });
          } else {
             done(null, snapshot.docs[0]);

@@ -2,9 +2,9 @@ const express = require("express");
 const authRoutes = require("./routes/auth-routes");
 const profileRoutes = require("./routes/profile-routes");
 const passportSetup = require("./config/passport-setup");
-const keys = require("./config/keys");
 const cookieSession = require("cookie-session");
 const passport = require("passport");
+const keys = require('./config/keys');
 
 const app = express();
 const port = process.env.PORT || 3000;
